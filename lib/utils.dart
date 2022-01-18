@@ -1,0 +1,572 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+extension CustomContext on BuildContext {
+  Orientation orientation() => MediaQuery.of(this).orientation;
+  double height([double percent = 1]) {
+    return orientation() == Orientation.portrait
+        ? MediaQuery.of(this).size.height * percent
+        : MediaQuery.of(this).size.width * percent;
+  }
+
+  double width([double percent = 1]) {
+    {
+      return orientation() == Orientation.landscape
+          ? MediaQuery.of(this).size.height * percent
+          : MediaQuery.of(this).size.width * percent;
+    }
+  }
+}
+
+const Color black = Color(0xff000000);
+const Color white = Color(0xffffffff);
+const Color purple = Color(0xff0644E2);
+
+class ScrollPoints extends StatelessWidget {
+  final Color color;
+
+  const ScrollPoints(this.color);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: context.height(.011),
+      height: context.height(.011),
+      decoration: BoxDecoration(color: color, shape: BoxShape.circle),
+    );
+  }
+}
+
+class Hspace extends StatelessWidget {
+  final double height;
+  const Hspace(this.height);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: height,
+    );
+  }
+}
+
+class Wspace extends StatelessWidget {
+  final double width;
+  const Wspace(this.width);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: width,
+    );
+  }
+}
+
+class Logotext extends StatelessWidget {
+  const Logotext({
+    Key? key,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      children: [
+        SizedBox(
+          width: context.width(.1),
+          child: Image.asset(
+            'assets/icons/logo.png',
+          ),
+        ),
+        Wspace(context.width(.01)),
+        Text(
+          "Traveller",
+          style: TextStyle(
+              color: black,
+              fontWeight: FontWeight.w500,
+              fontSize: context.width(.05)),
+        )
+      ],
+    );
+  }
+}
+
+const countries = [
+  {"name": "Afghanistan", "code": "AF"},
+  {"name": "land Islands", "code": "AX"},
+  {"name": "Albania", "code": "AL"},
+  {"name": "Algeria", "code": "DZ"},
+  {"name": "American Samoa", "code": "AS"},
+  {"name": "Andorra", "code": "AD"},
+  {"name": "Angola", "code": "AO"},
+  {"name": "Anguilla", "code": "AI"},
+  {"name": "Antarctica", "code": "AQ"},
+  {"name": "Antigua and Barbuda", "code": "AG"},
+  {"name": "Argentina", "code": "AR"},
+  {"name": "Armenia", "code": "AM"},
+  {"name": "Aruba", "code": "AW"},
+  {"name": "Australia", "code": "AU"},
+  {"name": "Austria", "code": "AT"},
+  {"name": "Azerbaijan", "code": "AZ"},
+  {"name": "Bahamas", "code": "BS"},
+  {"name": "Bahrain", "code": "BH"},
+  {"name": "Bangladesh", "code": "BD"},
+  {"name": "Barbados", "code": "BB"},
+  {"name": "Belarus", "code": "BY"},
+  {"name": "Belgium", "code": "BE"},
+  {"name": "Belize", "code": "BZ"},
+  {"name": "Benin", "code": "BJ"},
+  {"name": "Bermuda", "code": "BM"},
+  {"name": "Bhutan", "code": "BT"},
+  {"name": "Bolivia", "code": "BO"},
+  {"name": "Bosnia and Herzegovina", "code": "BA"},
+  {"name": "Botswana", "code": "BW"},
+  {"name": "Bouvet Island", "code": "BV"},
+  {"name": "Brazil", "code": "BR"},
+  {"name": "British Indian Ocean Territory", "code": "IO"},
+  {"name": "Brunei Darussalam", "code": "BN"},
+  {"name": "Bulgaria", "code": "BG"},
+  {"name": "Burkina Faso", "code": "BF"},
+  {"name": "Burundi", "code": "BI"},
+  {"name": "Cambodia", "code": "KH"},
+  {"name": "Cameroon", "code": "CM"},
+  {"name": "Canada", "code": "CA"},
+  {"name": "Cape Verde", "code": "CV"},
+  {"name": "Cayman Islands", "code": "KY"},
+  {"name": "Central African Republic", "code": "CF"},
+  {"name": "Chad", "code": "TD"},
+  {"name": "Chile", "code": "CL"},
+  {"name": "China", "code": "CN"},
+  {"name": "Christmas Island", "code": "CX"},
+  {"name": "Cocos (Keeling) Islands", "code": "CC"},
+  {"name": "Colombia", "code": "CO"},
+  {"name": "Comoros", "code": "KM"},
+  {"name": "Congo", "code": "CG"},
+  {"name": "Congo, The Democratic Republic of the", "code": "CD"},
+  {"name": "Cook Islands", "code": "CK"},
+  {"name": "Costa Rica", "code": "CR"},
+  // ignore: avoid_escaping_inner_quotes
+  {"name": "Cote D\"Ivoire", "code": "CI"},
+  {"name": "Croatia", "code": "HR"},
+  {"name": "Cuba", "code": "CU"},
+  {"name": "Cyprus", "code": "CY"},
+  {"name": "Czech Republic", "code": "CZ"},
+  {"name": "Denmark", "code": "DK"},
+  {"name": "Djibouti", "code": "DJ"},
+  {"name": "Dominica", "code": "DM"},
+  {"name": "Dominican Republic", "code": "DO"},
+  {"name": "Ecuador", "code": "EC"},
+  {"name": "Egypt", "code": "EG"},
+  {"name": "El Salvador", "code": "SV"},
+  {"name": "Equatorial Guinea", "code": "GQ"},
+  {"name": "Eritrea", "code": "ER"},
+  {"name": "Estonia", "code": "EE"},
+  {"name": "Ethiopia", "code": "ET"},
+  {"name": "Falkland Islands (Malvinas)", "code": "FK"},
+  {"name": "Faroe Islands", "code": "FO"},
+  {"name": "Fiji", "code": "FJ"},
+  {"name": "Finland", "code": "FI"},
+  {"name": "France", "code": "FR"},
+  {"name": "French Guiana", "code": "GF"},
+  {"name": "French Polynesia", "code": "PF"},
+  {"name": "French Southern Territories", "code": "TF"},
+  {"name": "Gabon", "code": "GA"},
+  {"name": "Gambia", "code": "GM"},
+  {"name": "Georgia", "code": "GE"},
+  {"name": "Germany", "code": "DE"},
+  {"name": "Ghana", "code": "GH"},
+  {"name": "Gibraltar", "code": "GI"},
+  {"name": "Greece", "code": "GR"},
+  {"name": "Greenland", "code": "GL"},
+  {"name": "Grenada", "code": "GD"},
+  {"name": "Guadeloupe", "code": "GP"},
+  {"name": "Guam", "code": "GU"},
+  {"name": "Guatemala", "code": "GT"},
+  {"name": "Guernsey", "code": "GG"},
+  {"name": "Guinea", "code": "GN"},
+  {"name": "Guinea-Bissau", "code": "GW"},
+  {"name": "Guyana", "code": "GY"},
+  {"name": "Haiti", "code": "HT"},
+  {"name": "Heard Island and Mcdonald Islands", "code": "HM"},
+  {"name": "Holy See (Vatican City State)", "code": "VA"},
+  {"name": "Honduras", "code": "HN"},
+  {"name": "Hong Kong", "code": "HK"},
+  {"name": "Hungary", "code": "HU"},
+  {"name": "Iceland", "code": "IS"},
+  {"name": "India", "code": "IN"},
+  {"name": "Indonesia", "code": "ID"},
+  {"name": "Iran, Islamic Republic Of", "code": "IR"},
+  {"name": "Iraq", "code": "IQ"},
+  {"name": "Ireland", "code": "IE"},
+  {"name": "Isle of Man", "code": "IM"},
+  {"name": "Israel", "code": "IL"},
+  {"name": "Italy", "code": "IT"},
+  {"name": "Jamaica", "code": "JM"},
+  {"name": "Japan", "code": "JP"},
+  {"name": "Jersey", "code": "JE"},
+  {"name": "Jordan", "code": "JO"},
+  {"name": "Kazakhstan", "code": "KZ"},
+  {"name": "Kenya", "code": "KE"},
+  {"name": "Kiribati", "code": "KI"},
+  // ignore: avoid_escaping_inner_quotes
+  {"name": "Korea, Democratic People\"s Republic of", "code": "KP"},
+  {"name": "Korea, Republic of", "code": "KR"},
+  {"name": "Kuwait", "code": "KW"},
+  {"name": "Kyrgyzstan", "code": "KG"},
+  // ignore: unnecessary_string_escapes
+  {"name": "Lao People\'S Democratic Republic", "code": "LA"},
+  {"name": "Latvia", "code": "LV"},
+  {"name": "Lebanon", "code": "LB"},
+  {"name": "Lesotho", "code": "LS"},
+  {"name": "Liberia", "code": "LR"},
+  {"name": "Libyan Arab Jamahiriya", "code": "LY"},
+  {"name": "Liechtenstein", "code": "LI"},
+  {"name": "Lithuania", "code": "LT"},
+  {"name": "Luxembourg", "code": "LU"},
+  {"name": "Macao", "code": "MO"},
+  {"name": "Macedonia, The Former Yugoslav Republic of", "code": "MK"},
+  {"name": "Madagascar", "code": "MG"},
+  {"name": "Malawi", "code": "MW"},
+  {"name": "Malaysia", "code": "MY"},
+  {"name": "Maldives", "code": "MV"},
+  {"name": "Mali", "code": "ML"},
+  {"name": "Malta", "code": "MT"},
+  {"name": "Marshall Islands", "code": "MH"},
+  {"name": "Martinique", "code": "MQ"},
+  {"name": "Mauritania", "code": "MR"},
+  {"name": "Mauritius", "code": "MU"},
+  {"name": "Mayotte", "code": "YT"},
+  {"name": "Mexico", "code": "MX"},
+  {"name": "Micronesia, Federated States of", "code": "FM"},
+  {"name": "Moldova, Republic of", "code": "MD"},
+  {"name": "Monaco", "code": "MC"},
+  {"name": "Mongolia", "code": "MN"},
+  {"name": "Montenegro", "code": "ME"},
+  {"name": "Montserrat", "code": "MS"},
+  {"name": "Morocco", "code": "MA"},
+  {"name": "Mozambique", "code": "MZ"},
+  {"name": "Myanmar", "code": "MM"},
+  {"name": "Namibia", "code": "NA"},
+  {"name": "Nauru", "code": "NR"},
+  {"name": "Nepal", "code": "NP"},
+  {"name": "Netherlands", "code": "NL"},
+  {"name": "Netherlands Antilles", "code": "AN"},
+  {"name": "New Caledonia", "code": "NC"},
+  {"name": "New Zealand", "code": "NZ"},
+  {"name": "Nicaragua", "code": "NI"},
+  {"name": "Niger", "code": "NE"},
+  {"name": "Nigeria", "code": "NG"},
+  {"name": "Niue", "code": "NU"},
+  {"name": "Norfolk Island", "code": "NF"},
+  {"name": "Northern Mariana Islands", "code": "MP"},
+  {"name": "Norway", "code": "NO"},
+  {"name": "Oman", "code": "OM"},
+  {"name": "Pakistan", "code": "PK"},
+  {"name": "Palau", "code": "PW"},
+  {"name": "Palestinian Territory, Occupied", "code": "PS"},
+  {"name": "Panama", "code": "PA"},
+  {"name": "Papua New Guinea", "code": "PG"},
+  {"name": "Paraguay", "code": "PY"},
+  {"name": "Peru", "code": "PE"},
+  {"name": "Philippines", "code": "PH"},
+  {"name": "Pitcairn", "code": "PN"},
+  {"name": "Poland", "code": "PL"},
+  {"name": "Portugal", "code": "PT"},
+  {"name": "Puerto Rico", "code": "PR"},
+  {"name": "Qatar", "code": "QA"},
+  {"name": "Reunion", "code": "RE"},
+  {"name": "Romania", "code": "RO"},
+  {"name": "Russian Federation", "code": "RU"},
+  {"name": "RWANDA", "code": "RW"},
+  {"name": "Saint Helena", "code": "SH"},
+  {"name": "Saint Kitts and Nevis", "code": "KN"},
+  {"name": "Saint Lucia", "code": "LC"},
+  {"name": "Saint Pierre and Miquelon", "code": "PM"},
+  {"name": "Saint Vincent and the Grenadines", "code": "VC"},
+  {"name": "Samoa", "code": "WS"},
+  {"name": "San Marino", "code": "SM"},
+  {"name": "Sao Tome and Principe", "code": "ST"},
+  {"name": "Saudi Arabia", "code": "SA"},
+  {"name": "Senegal", "code": "SN"},
+  {"name": "Serbia", "code": "RS"},
+  {"name": "Seychelles", "code": "SC"},
+  {"name": "Sierra Leone", "code": "SL"},
+  {"name": "Singapore", "code": "SG"},
+  {"name": "Slovakia", "code": "SK"},
+  {"name": "Slovenia", "code": "SI"},
+  {"name": "Solomon Islands", "code": "SB"},
+  {"name": "Somalia", "code": "SO"},
+  {"name": "South Africa", "code": "ZA"},
+  {"name": "South Georgia and the South Sandwich Islands", "code": "GS"},
+  {"name": "Spain", "code": "ES"},
+  {"name": "Sri Lanka", "code": "LK"},
+  {"name": "Sudan", "code": "SD"},
+  {"name": "Suriname", "code": "SR"},
+  {"name": "Svalbard and Jan Mayen", "code": "SJ"},
+  {"name": "Swaziland", "code": "SZ"},
+  {"name": "Sweden", "code": "SE"},
+  {"name": "Switzerland", "code": "CH"},
+  {"name": "Syrian Arab Republic", "code": "SY"},
+  {"name": "Taiwan, Province of China", "code": "TW"},
+  {"name": "Tajikistan", "code": "TJ"},
+  {"name": "Tanzania, United Republic of", "code": "TZ"},
+  {"name": "Thailand", "code": "TH"},
+  {"name": "Timor-Leste", "code": "TL"},
+  {"name": "Togo", "code": "TG"},
+  {"name": "Tokelau", "code": "TK"},
+  {"name": "Tonga", "code": "TO"},
+  {"name": "Trinidad and Tobago", "code": "TT"},
+  {"name": "Tunisia", "code": "TN"},
+  {"name": "Turkey", "code": "TR"},
+  {"name": "Turkmenistan", "code": "TM"},
+  {"name": "Turks and Caicos Islands", "code": "TC"},
+  {"name": "Tuvalu", "code": "TV"},
+  {"name": "Uganda", "code": "UG"},
+  {"name": "Ukraine", "code": "UA"},
+  {"name": "United Arab Emirates", "code": "AE"},
+  {"name": "United Kingdom", "code": "GB"},
+  {"name": "United States", "code": "US"},
+  {"name": "United States Minor Outlying Islands", "code": "UM"},
+  {"name": "Uruguay", "code": "UY"},
+  {"name": "Uzbekistan", "code": "UZ"},
+  {"name": "Vanuatu", "code": "VU"},
+  {"name": "Venezuela", "code": "VE"},
+  {"name": "Viet Nam", "code": "VN"},
+  {"name": "Virgin Islands, British", "code": "VG"},
+  {"name": "Virgin Islands, U.S.", "code": "VI"},
+  {"name": "Wallis and Futuna", "code": "WF"},
+  {"name": "Western Sahara", "code": "EH"},
+  {"name": "Yemen", "code": "YE"},
+  {"name": "Zambia", "code": "ZM"},
+  {"name": "Zimbabwe", "code": "ZW"}
+];
+
+const nationalities = [
+  {"nationalityId": 34, "countryCode": 'AF', "nationality": 'Afghan'},
+  {"nationalityId": 35, "countryCode": 'AL', "nationality": 'Albanian'},
+  {"nationalityId": 36, "countryCode": 'DZ', "nationality": 'Algerian'},
+  {"nationalityId": 158, "countryCode": 'US', "nationality": 'American'},
+  {"nationalityId": 38, "countryCode": 'AD', "nationality": 'Andorran'},
+  {"nationalityId": 39, "countryCode": 'AO', "nationality": 'Angolan'},
+  {"nationalityId": 40, "countryCode": 'AM', "nationality": 'Armenian'},
+  {"nationalityId": 41, "countryCode": 'AT', "nationality": 'Austrian'},
+  {"nationalityId": 42, "countryCode": 'AZ', "nationality": 'Azerbaijani'},
+  {"nationalityId": 2, "countryCode": 'AR', "nationality": 'Argentinian'},
+  {"nationalityId": 3, "countryCode": 'AU', "nationality": 'Australian'},
+  {"nationalityId": 43, "countryCode": 'BH', "nationality": 'Bahraini'},
+  {"nationalityId": 44, "countryCode": 'BD', "nationality": 'Bangladeshi'},
+  {"nationalityId": 45, "countryCode": 'BB', "nationality": 'Barbadian'},
+  {"nationalityId": 46, "countryCode": 'BY', "nationality": 'Belarusian'},
+  {"nationalityId": 47, "countryCode": 'BZ', "nationality": 'Belizean'},
+  {"nationalityId": 48, "countryCode": 'BJ', "nationality": 'Beninese'},
+  {"nationalityId": 49, "countryCode": 'BM', "nationality": 'Bermudian'},
+  {"nationalityId": 50, "countryCode": 'BT', "nationality": 'Bhutanese'},
+  {"nationalityId": 51, "countryCode": 'BO', "nationality": 'Bolivian'},
+  {"nationalityId": 52, "countryCode": 'BA', "nationality": 'Bosnian'},
+  {"nationalityId": 53, "countryCode": 'BW', "nationality": 'Botswanan'},
+  {"nationalityId": 1, "countryCode": 'GB', "nationality": 'British'},
+  {"nationalityId": 54, "countryCode": 'BG', "nationality": 'Bulgarian'},
+  {"nationalityId": 55, "countryCode": 'BF', "nationality": 'Burkinese'},
+  {"nationalityId": 56, "countryCode": 'BI', "nationality": 'Burundian'},
+  {"nationalityId": 7, "countryCode": 'CA', "nationality": 'Canadian'},
+  {"nationalityId": 8, "countryCode": 'CN', "nationality": 'Chinese'},
+  {"nationalityId": 9, "countryCode": 'CO', "nationality": 'Colombian'},
+  {"nationalityId": 10, "countryCode": 'CU', "nationality": 'Cuban'},
+  {"nationalityId": 57, "countryCode": 'KH', "nationality": 'Cambodian'},
+  {"nationalityId": 58, "countryCode": 'CM', "nationality": 'Cameroonian'},
+  {"nationalityId": 59, "countryCode": 'CV', "nationality": 'Cape Verdean'},
+  {"nationalityId": 60, "countryCode": 'TD', "nationality": 'Chadian'},
+  {"nationalityId": 61, "countryCode": 'CL', "nationality": 'Chilean'},
+  {"nationalityId": 62, "countryCode": 'CG', "nationality": 'Congolese'},
+  {"nationalityId": 63, "countryCode": 'CR', "nationality": 'Costa Rican'},
+  {"nationalityId": 64, "countryCode": 'HR', "nationality": 'Croat'},
+  {"nationalityId": 65, "countryCode": 'CY', "nationality": 'Cypriot'},
+  {"nationalityId": 66, "countryCode": 'CZ', "nationality": 'Czech'},
+  {"nationalityId": 67, "countryCode": 'DK', "nationality": 'Danish'},
+  {"nationalityId": 11, "countryCode": 'DO', "nationality": 'Dominican'},
+  {"nationalityId": 68, "countryCode": 'DJ', "nationality": 'Djiboutian'},
+  {"nationalityId": 69, "countryCode": 'DM', "nationality": 'Dominican'},
+  {"nationalityId": 26, "countryCode": 'NL', "nationality": 'Dutch'},
+  {"nationalityId": 12, "countryCode": 'EC', "nationality": 'Ecuadorean'},
+  {"nationalityId": 70, "countryCode": 'EG', "nationality": 'Egyptian'},
+  {"nationalityId": 71, "countryCode": 'ER', "nationality": 'Eritrean'},
+  {"nationalityId": 72, "countryCode": 'EE', "nationality": 'Estonian'},
+  {"nationalityId": 73, "countryCode": 'ET', "nationality": 'Ethiopian'},
+  {"nationalityId": 74, "countryCode": 'FJ', "nationality": 'Fijian'},
+  {"nationalityId": 75, "countryCode": 'FI', "nationality": 'Finnish'},
+  {
+    "nationalityId": 76,
+    "countryCode": 'PF',
+    "nationality": 'French Polynesian'
+  },
+  {"nationalityId": 14, "countryCode": 'FR', "nationality": 'French'},
+  {"nationalityId": 77, "countryCode": 'GA', "nationality": 'Gabonese'},
+  {"nationalityId": 78, "countryCode": 'GM', "nationality": 'Gambian'},
+  {"nationalityId": 79, "countryCode": 'GE', "nationality": 'Georgian'},
+  {"nationalityId": 15, "countryCode": 'DE', "nationality": 'German'},
+  {"nationalityId": 16, "countryCode": 'GT', "nationality": 'Guatemalan'},
+  {"nationalityId": 80, "countryCode": 'GH', "nationality": 'Ghanaian'},
+  {"nationalityId": 81, "countryCode": 'GR', "nationality": 'Greek'},
+  {"nationalityId": 82, "countryCode": 'GD', "nationality": 'Grenadian'},
+  {"nationalityId": 83, "countryCode": 'GN', "nationality": 'Guinean'},
+  {"nationalityId": 84, "countryCode": 'GY', "nationality": 'Guyanese'},
+  {"nationalityId": 17, "countryCode": 'HT', "nationality": 'Haitian'},
+  {"nationalityId": 18, "countryCode": 'HN', "nationality": 'Honduran'},
+  {"nationalityId": 85, "countryCode": 'HU', "nationality": 'Hungarian'},
+  {"nationalityId": 19, "countryCode": 'IN', "nationality": 'Indian'},
+  {"nationalityId": 20, "countryCode": 'IE', "nationality": 'Ireland'},
+  {"nationalityId": 21, "countryCode": 'IL', "nationality": 'Israeli'},
+  {"nationalityId": 22, "countryCode": 'IT', "nationality": 'Italian'},
+  {"nationalityId": 86, "countryCode": 'IS', "nationality": 'Icelandic'},
+  {"nationalityId": 87, "countryCode": 'ID', "nationality": 'Indonesian'},
+  {"nationalityId": 88, "countryCode": 'IR', "nationality": 'Iranian'},
+  {"nationalityId": 89, "countryCode": 'IQ', "nationality": 'Iraqi'},
+  {"nationalityId": 23, "countryCode": 'JP', "nationality": 'Japanese'},
+  {"nationalityId": 90, "countryCode": 'JM', "nationality": 'Jamaican'},
+  {"nationalityId": 91, "countryCode": 'JO', "nationality": 'Jordanian'},
+  {"nationalityId": 92, "countryCode": 'KZ', "nationality": 'Kazakh'},
+  {"nationalityId": 93, "countryCode": 'KE', "nationality": 'Kenyan'},
+  {"nationalityId": 94, "countryCode": 'KP', "nationality": 'North Korean'},
+  {"nationalityId": 95, "countryCode": 'KW', "nationality": 'Kuwaiti'},
+  {"nationalityId": 96, "countryCode": 'LV', "nationality": 'Latvian'},
+  {"nationalityId": 97, "countryCode": 'LB', "nationality": 'Lebanese'},
+  {"nationalityId": 98, "countryCode": 'LR', "nationality": 'Liberian'},
+  {"nationalityId": 99, "countryCode": 'LY', "nationality": 'Libyan'},
+  {"nationalityId": 100, "countryCode": 'LT', "nationality": 'Lithuanian'},
+  {"nationalityId": 101, "countryCode": 'LU', "nationality": 'LUXEMBOURG'},
+  {"nationalityId": 102, "countryCode": 'MG', "nationality": 'Madagascan'},
+  {"nationalityId": 103, "countryCode": 'MW', "nationality": 'Malawian'},
+  {"nationalityId": 104, "countryCode": 'MY', "nationality": 'Malaysian'},
+  {"nationalityId": 105, "countryCode": 'MV', "nationality": 'Maldivian'},
+  {"nationalityId": 106, "countryCode": 'ML', "nationality": 'Malian'},
+  {"nationalityId": 107, "countryCode": 'MT', "nationality": 'Maltese'},
+  {"nationalityId": 108, "countryCode": 'MR', "nationality": 'Mauritanian'},
+  {"nationalityId": 109, "countryCode": 'MU', "nationality": 'Mauritian'},
+  {"nationalityId": 110, "countryCode": 'MC', "nationality": 'Monacan'},
+  {"nationalityId": 111, "countryCode": 'MN', "nationality": 'Mongolian'},
+  {"nationalityId": 112, "countryCode": 'ME', "nationality": 'Montenegrin'},
+  {"nationalityId": 113, "countryCode": 'MA', "nationality": 'Moroccan'},
+  {"nationalityId": 114, "countryCode": 'MZ', "nationality": 'Mozambican'},
+  {"nationalityId": 25, "countryCode": 'MX', "nationality": 'Mexican'},
+  {"nationalityId": 115, "countryCode": 'NA', "nationality": 'Namibian'},
+  {"nationalityId": 116, "countryCode": 'NP', "nationality": 'Nepalese'},
+  {"nationalityId": 117, "countryCode": 'NZ', "nationality": 'New Zealand'},
+  {"nationalityId": 118, "countryCode": 'NI', "nationality": 'Nicaraguan'},
+  {"nationalityId": 119, "countryCode": 'NE', "nationality": 'Nigerien'},
+  {"nationalityId": 120, "countryCode": 'NG', "nationality": 'Nigerian'},
+  {"nationalityId": 121, "countryCode": 'NO', "nationality": 'Norwegian'},
+  {"nationalityId": 122, "countryCode": 'OM', "nationality": 'Omani'},
+  {"nationalityId": 123, "countryCode": 'PK', "nationality": 'Pakistani'},
+  {"nationalityId": 124, "countryCode": 'PA', "nationality": 'Panamanian'},
+  {"nationalityId": 125, "countryCode": 'PG', "nationality": 'Guinean'},
+  {"nationalityId": 126, "countryCode": 'PY', "nationality": 'Paraguayan'},
+  {"nationalityId": 127, "countryCode": 'PE', "nationality": 'Peruvian'},
+  {"nationalityId": 27, "countryCode": 'PH', "nationality": 'Philippine'},
+  {"nationalityId": 128, "countryCode": 'PL', "nationality": 'Polish'},
+  {"nationalityId": 129, "countryCode": 'PT', "nationality": 'Portuguese'},
+  {"nationalityId": 130, "countryCode": 'QA', "nationality": 'Qatari'},
+  {"nationalityId": 131, "countryCode": 'RO', "nationality": 'Romanian'},
+  {"nationalityId": 132, "countryCode": 'RW', "nationality": 'Rwandan'},
+  {"nationalityId": 13, "countryCode": 'SV', "nationality": 'Salvadorean'},
+  {"nationalityId": 37, "countryCode": 'AS', "nationality": 'Samoan'},
+  {"nationalityId": 133, "countryCode": 'SA', "nationality": 'Saudi Arabian'},
+  {"nationalityId": 134, "countryCode": 'SN', "nationality": 'Senegalese'},
+  {"nationalityId": 135, "countryCode": 'RS', "nationality": 'Serbian'},
+  {"nationalityId": 136, "countryCode": 'SL', "nationality": 'Sierra Leonian'},
+  {"nationalityId": 137, "countryCode": 'SG', "nationality": 'Singaporean'},
+  {"nationalityId": 138, "countryCode": 'SK', "nationality": 'Slovak'},
+  {"nationalityId": 139, "countryCode": 'SI', "nationality": 'Slovenian'},
+  {"nationalityId": 140, "countryCode": 'SB', "nationality": 'Slomoni'},
+  {"nationalityId": 141, "countryCode": 'SO', "nationality": 'Somali'},
+  {"nationalityId": 142, "countryCode": 'ZA', "nationality": 'South African'},
+  {"nationalityId": 24, "countryCode": 'KR', "nationality": 'South Korean'},
+  {"nationalityId": 28, "countryCode": 'ES', "nationality": 'Spanish'},
+  {"nationalityId": 29, "countryCode": 'SE', "nationality": 'Swedish'},
+  {"nationalityId": 30, "countryCode": 'CH', "nationality": 'Swiss'},
+  {"nationalityId": 143, "countryCode": 'LK', "nationality": 'Sri Lankan'},
+  {"nationalityId": 144, "countryCode": 'SD', "nationality": 'Sudanese'},
+  {"nationalityId": 145, "countryCode": 'SR', "nationality": 'Surinamese'},
+  {"nationalityId": 146, "countryCode": 'SZ', "nationality": 'Swazi'},
+  {"nationalityId": 31, "countryCode": 'TW', "nationality": 'Taiwanese'},
+  {"nationalityId": 147, "countryCode": 'TJ', "nationality": 'Tajik'},
+  {"nationalityId": 148, "countryCode": 'TH', "nationality": 'Thai'},
+  {"nationalityId": 149, "countryCode": 'TG', "nationality": 'Togolese'},
+  {"nationalityId": 150, "countryCode": 'TT', "nationality": 'Trinidadian'},
+  {"nationalityId": 151, "countryCode": 'TN', "nationality": 'Tunisian'},
+  {"nationalityId": 152, "countryCode": 'TR', "nationality": 'Turkish'},
+  {"nationalityId": 153, "countryCode": 'TM', "nationality": 'Turkoman'},
+  {"nationalityId": 154, "countryCode": 'TV', "nationality": 'Tuvaluan'},
+  {"nationalityId": 155, "countryCode": 'UG', "nationality": 'Ugandan'},
+  {"nationalityId": 156, "countryCode": 'UA', "nationality": 'Ukrainian'},
+  {"nationalityId": 157, "countryCode": 'AE', "nationality": 'Emirati'},
+  {"nationalityId": 32, "countryCode": 'VE', "nationality": 'Venezuelan'},
+  {"nationalityId": 33, "countryCode": 'VN', "nationality": 'Vietnamese'},
+  {"nationalityId": 159, "countryCode": 'UY', "nationality": 'Uruguayan'},
+  {"nationalityId": 160, "countryCode": 'UZ', "nationality": 'Uzbek'},
+  {"nationalityId": 161, "countryCode": 'VU', "nationality": 'Vanuatuan'},
+  {"nationalityId": 162, "countryCode": 'YE', "nationality": 'Yemeni'},
+  {"nationalityId": 163, "countryCode": 'ZM', "nationality": 'Zambian'}
+];
+
+const lGAs = [
+  "Agege",
+  "Ajeromi-Ifelodun",
+  "Alimosho",
+  "Amuwo-Odofin",
+  "Apapa",
+  "Badagry",
+  "Epe",
+  "Eti-Osa",
+  "Ibeju-Lekki",
+  "Ifako-Ijaiye",
+  "Ikeja",
+  "Ikorodu",
+  "Kosofe",
+  "Lagos-Island",
+  "Lagos-Mainland",
+  "Mushin",
+  "Ojo",
+  "Oshodi-Isolo",
+  "Shomolu",
+  "Surulere",
+  "Yewa-South"
+];
+
+class Formfield extends StatelessWidget {
+  final TextEditingController controller;
+  final TextInputType type;
+  final List<TextInputFormatter>? formatter;
+  final String label;
+  final bool enabled;
+
+  const Formfield(
+      {Key? key,
+      required this.controller,
+      required this.type,
+      this.enabled = true,
+      this.formatter,
+      required this.label})
+      : super(key: key);
+  @override
+  Widget build(BuildContext context) {
+    return TextFormField(
+      style: TextStyle(
+          color: Colors.black,
+          fontSize: context.width(.04),
+          fontWeight: FontWeight.w400),
+      controller: controller,
+      keyboardType: type,
+      enabled: enabled,
+      inputFormatters: formatter,
+      decoration: InputDecoration(
+          labelText: label,
+          contentPadding: EdgeInsets.all(context.width(.04)),
+          enabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Color(0xff928989)),
+              borderRadius: BorderRadius.circular(context.width())),
+          disabledBorder: OutlineInputBorder(
+              borderSide: const BorderSide(color: Color(0xff928989)),
+              borderRadius: BorderRadius.circular(context.width())),
+          border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(context.width()))),
+    );
+  }
+}
